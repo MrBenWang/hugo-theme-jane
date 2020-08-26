@@ -2,7 +2,7 @@
 
 {{ define "content" }}
   {{ $termName := .Data.Singular }}
-  {{ $terms := .Data.Terms.ByCount }}
+  {{ $terms := .Data.Terms.Alphabetical.Reverse }}
   {{ $length := len $terms }}
   {{ $type := .Type }}
 
@@ -11,6 +11,8 @@
     {{ range $terms }}
     {{ $term := .Term }}
     {{ $pages := .Pages }}
+    {{ if in $.Site.Params.unShowCategory $term }}
+    {{ else }}
     {{ with $.Site.GetPage "taxonomy" (printf "%s/%s" $type $term) }}
       <section id="archive" class="archive">
         <div class="archive-title">
@@ -41,6 +43,7 @@
             </div>
           {{ end }}
       </section>
+    {{ end }}
     {{ end }}
     {{ end }}
 
